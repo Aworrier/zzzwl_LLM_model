@@ -1,0 +1,66 @@
+# 项目说明
+
+本项目为自定义轻量级大语言模型（LLM）的实现与测试，主要基于 PyTorch 和 HuggingFace Transformers 框架。目录结构及主要文件说明如下：
+
+## 目录结构
+
+```
+create_one_model/
+├── k_model.py           # 模型结构与核心组件实现
+├── test_anything.py     # 各模块及整体模型的单元测试与文本生成示例
+├── tokenizer_k/         # 本地分词器文件夹（需自行准备或训练）
+├── readme               # 项目说明文件
+```
+
+## 主要文件说明
+
+### 1. k_model.py
+
+- 实现了自定义的 Transformer 解码器模型，包括：
+  - `ModelConfig`：模型超参数配置类。
+  - `RMSNorm`：归一化层，提升训练稳定性。
+  - 位置编码相关函数（如 `precompute_freqs_cis`, `apply_rotary_emb` 等）。
+  - `Attention`：多头注意力模块，支持分组查询（GQA）。
+  - `MLP`：前馈神经网络模块。
+  - `DecoderLayer`：单层解码器结构。
+  - `Transformer`：完整的自回归语言模型，支持文本生成。
+
+### 2. test_anything.py
+
+- 包含各个模块的单元测试函数，便于验证模型各部分功能是否正确。
+- 提供了端到端的文本生成示例，演示如何用本地分词器和模型生成自然语言文本。
+
+### 3. tokenizer_k/
+
+- 本地分词器目录，需包含 HuggingFace 格式的分词器文件（如 `tokenizer.json`、`vocab.txt` 等）。
+- 可通过 `AutoTokenizer.from_pretrained("./tokenizer_k")` 加载。
+
+### 4. readme
+
+- 项目说明文件（即本文件）。
+
+## 快速开始
+
+1. **准备分词器**  
+   将 HuggingFace 格式的分词器文件放入 `tokenizer_k/` 文件夹。
+
+2. **运行测试**  
+   在 `create_one_model/` 目录下运行：
+   ```bash
+   python test_anything.py
+   ```
+   可测试模型各模块功能，并体验文本生成。
+
+## 依赖环境
+
+- Python 3.8+
+- torch
+- transformers
+
+## 备注
+
+- 本项目为学习和实验用途，模型结构可根据实际需求调整。
+- 若需训练自己的分词器，可参考 HuggingFace Tokenizers 工具包。
+
+---
+
